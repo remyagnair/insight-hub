@@ -1,21 +1,24 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
+# Use the official Python image
+FROM python:3.9
 
-# Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the entire repository into the container at /app
+# Copy the application files
 COPY . /app
 
-# Install the dependencies from requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Install dependencies
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Expose the port that Flask will run on
+# Set environment variables (Cloud Run will inject these)
+ENV GOOGLE_APPLICATION_CREDENTIALS="/tmp/key.json"
+
+# Copy the credentials from GitHub Secrets (mounted at runtime)
+COPY key.json /tmp/key.json
+
+# Expose the application port (Cloud Run uses 8080)
 EXPOSE 8080
 
-# Set environment variable for the port
-ENV PORT 8080
-
-# Run the application
-CMD ["python", "app.py"]
+# Start the application
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "app:app"]
 
