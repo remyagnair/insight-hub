@@ -1,21 +1,24 @@
-# Use an official Python runtime as a parent image
+# Use the official Python image
 FROM python:3.9
 
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy files to the container
-COPY . .
+# Copy the application files
+COPY . /app
 
 # Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Expose port (important for Cloud Run)
+# Set environment variables (Cloud Run will inject these)
+ENV GOOGLE_APPLICATION_CREDENTIALS="/tmp/key.json"
+
+# Copy the credentials from GitHub Secrets (mounted at runtime)
+COPY key.json /tmp/key.json
+
+# Expose the application port (Cloud Run uses 8080)
 EXPOSE 8080
 
-# Set environment variable for Python to run in unbuffered mode
-ENV PYTHONUNBUFFERED=1
-
-# Run the Python script
-CMD ["python", "main.py"]
+# Start the application
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "app:app"]
 
