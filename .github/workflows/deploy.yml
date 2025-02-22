@@ -41,6 +41,9 @@ jobs:
         docker build -t us-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/insight-hub:latest .
         # If using GCR, replace with:
         # docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/insight-hub:latest .
+    - name: Authenticate Docker to Artifact Registry
+      run: |
+        gcloud auth configure-docker us-docker.pkg.dev
     
     - name: Push Docker image to Google Artifact Registry
       run: |
