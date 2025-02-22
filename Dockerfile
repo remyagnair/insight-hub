@@ -13,12 +13,8 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Set environment variables (Cloud Run will inject these)
 ENV GOOGLE_APPLICATION_CREDENTIALS="/tmp/key.json"
 
-# Copy the credentials from GitHub Secrets (mounted at runtime)
-COPY key.json /tmp/key.json
-
 # Expose the application port (Cloud Run uses 8080)
 EXPOSE 8080
 
 # Start the application
 CMD ["gunicorn", "--bind", "0.0.0.0:8080", "app:app"]
-
