@@ -13,12 +13,21 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: Check Secret
+      run: echo "My secret is ${{ secrets.GCP_CREDENTIALS }}"
+
     
     - name: Set up Google Cloud credentials
       uses: google-github-actions/setup-gcloud@v2
       with:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
         credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+    - name: Authenticate with Google Cloud
+      run: |
+          echo "${{ secrets.GCP_CREDENTIALS }}" > "${HOME}/gcloud-key.json"
+          gcloud auth activate-service-account --key-file="${HOME}/gcloud-key.json"
 
 
     - name: Build Docker image
