@@ -18,7 +18,7 @@ jobs:
       uses: actions/checkout@v2  # Checkout the code from the repository
 
     - name: Set up Python
-      uses: actions/setup-python@v2  # Set up Python environment
+      uses: actions/setup-python@v3  # Set up Python environment
       with:
         python-version: '3.9'  # Specify the Python version you want to use
 
