@@ -23,34 +23,31 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    
+
     - name: Set up Google Cloud credentials
       uses: google-github-actions/setup-gcloud@v2
       with:
-        project_id: ${{ secrets.GCP_PROJECT_ID }}  # Your GCP project ID
-        credentials_json: ${{ secrets.GCP_CREDENTIALS }}  # Path to service account key in GitHub secrets
-    
-    - name: Configure Docker for Google Cloud
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+    - name: Save Google Cloud credentials to a file
       run: |
-        gcloud auth configure-docker us-docker.pkg.dev  # For Artifact Registry
-        # If using GCR, replace with:
-        # gcloud auth configure-docker gcr.io
-    
+        echo '${{ secrets.GCP_CREDENTIALS }}' > /tmp/key.json
+        echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json" >> $GITHUB_ENV
+
+    - name: Set environment variables
+      run: |
+        echo "GCP_DATASET_ID=${{ secrets.GCP_DATASET_ID }}" >> $GITHUB_ENV
+
     - name: Build Docker image
       run: |
         docker build -t us-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/insight-hub:latest .
-        # If using GCR, replace with:
-        # docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/insight-hub:latest .
-    - name: Authenticate Docker to Artifact Registry
-      run: |
-        gcloud auth configure-docker us-docker.pkg.dev
-    
+
     - name: Push Docker image to Google Artifact Registry
       run: |
+        gcloud auth configure-docker us-docker.pkg.dev
         docker push us-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/insight-hub:latest
-        # If using GCR, replace with:
-        # docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/insight-hub:latest
-    
+
     - name: Deploy to Cloud Run
       run: |
         gcloud run deploy insight-hub \
@@ -58,10 +55,4 @@ jobs:
           --platform managed \
           --region us-central1 \
           --allow-unauthenticated
-        # If using GCR, replace with:
-        # gcloud run deploy insight-hub \
-        #   --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/insight-hub:latest \
-        #   --platform managed \
-        #   --region us-central1 \
-        #   --allow-unauthenticated
 
