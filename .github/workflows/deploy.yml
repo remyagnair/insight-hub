@@ -14,40 +14,26 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
     - name: Set up Google Cloud credentials
       uses: google-github-actions/setup-gcloud@v2
       with:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
         credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-    - name: Set environment variables
-      run: |
-        echo "GCP_DATASET_ID=${{ secrets.GCP_DATASET_ID }}" >> $GITHUB_ENV
 
     - name: Build Docker image
       run: |
-        docker build -t us-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/insight-hub:latest .
+        docker build -t europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/insight-hub/insight-hub:latest .
 
     - name: Push Docker image to Google Artifact Registry
       run: |
-        gcloud auth configure-docker us-docker.pkg.dev
-        docker push us-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/insight-hub:latest
+        gcloud auth configure-docker europe-west1-docker.pkg.dev
+        docker push europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/insight-hub/insight-hub:latest
 
     - name: Deploy to Cloud Run
       run: |
         gcloud run deploy insight-hub \
-          --image us-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/insight-hub:latest \
+          --image europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/insight-hub/insight-hub:latest \
           --platform managed \
-          --region us-central1 \
+          --region europe-west1 \
           --allow-unauthenticated
-
