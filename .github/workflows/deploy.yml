@@ -30,11 +30,6 @@ jobs:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
         credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-    - name: Save Google Cloud credentials to a file
-      run: |
-        echo '${{ secrets.GCP_CREDENTIALS }}' > /tmp/key.json
-        echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json" >> $GITHUB_ENV
-
     - name: Set environment variables
       run: |
         echo "GCP_DATASET_ID=${{ secrets.GCP_DATASET_ID }}" >> $GITHUB_ENV
