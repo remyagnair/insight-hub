@@ -18,16 +18,17 @@ jobs:
       run: echo "My secret is ${{ secrets.GCP_CREDENTIALS }}"
 
     
-    - name: Set up Google Cloud credentials
-      uses: google-github-actions/setup-gcloud@v2
-      with:
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-        credentials_json: ${{ secrets.GCP_CREDENTIALS }}
-
+    # Authenticate using the service account key stored as a secret
     - name: Authenticate with Google Cloud
       run: |
-          echo "${{ secrets.GCP_CREDENTIALS }}" > "${HOME}/gcloud-key.json"
-          gcloud auth activate-service-account --key-file="${HOME}/gcloud-key.json"
+        # Decode the base64 encoded JSON key into a file
+        echo "${{ secrets.GCP_CREDENTIALS }}" | base64 --decode > $HOME/gcloud-key.json
+        
+        # Authenticate using the decoded service account key
+        gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
+        
+        # Set the Google Cloud project
+        gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
 
     - name: Build Docker image
