@@ -1,6 +1,5 @@
 from flask import Flask, render_template, jsonify
 import fetch_data
-import bigquery_client
 
 app = Flask(__name__)
 
