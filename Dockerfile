@@ -1,21 +1,21 @@
 # Use an official Python runtime as a parent image
-FROM python:3.9-slim
+FROM python:3.9
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# Copy the entire repository into the container at /app
-COPY . /app
+# Copy files to the container
+COPY . .
 
-# Install the dependencies from requirements.txt
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the port that Flask will run on
+# Expose port (important for Cloud Run)
 EXPOSE 8080
 
-# Set environment variable for the port
-ENV PORT 8080
+# Set environment variable for Python to run in unbuffered mode
+ENV PYTHONUNBUFFERED=1
 
-# Run the application
-CMD ["python", "app.py"]
+# Run the Python script
+CMD ["python", "main.py"]
 
