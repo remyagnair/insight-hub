@@ -33,7 +33,7 @@ jobs:
 
     - name: Upload test results
       if: always()  # Upload test results regardless of success or failure
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: pytest-results
         path: test-results  # Adjust if you have a specific path for test results
