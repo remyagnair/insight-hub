@@ -1,11 +1,11 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify,send_from_directory
 import fetch_data
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="build", static_url_path="")
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return send_from_directory(app.static_folder, "index.html")
 
 @app.route('/load_data', methods=['GET'])
 def load_data():
