@@ -1,0 +1,5 @@
+.background-gradient {  background: linear-gradient(135deg, #ffffff 0%, #4facfe 40%, #8e2de2 100%);
+}  
+.button-style{
+    @apply bg-sky-800 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-2 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2
+}

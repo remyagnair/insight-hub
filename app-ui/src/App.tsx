@@ -10,6 +10,8 @@ import type { AuthState } from "./store/slices/authSlice";
 import Login from "./components/login";
 import Register from "./components/register";
 import Dashboard from "./components/dashBoard";
+import LandingPage from "./components/landingPage";
+import "./components/app.css";
 function App() {
   const user = useAppSelector((state: RootState) => (state.auth as AuthState).user);
   return (
@@ -18,7 +20,8 @@ function App() {
       <Router>
         <Routes>
           {/* Default route based on auth state */}
-          <Route path="/" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
+          <Route path="/" element={<Navigate to={"/landing"} replace />} />
+          <Route path="/landing" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route
@@ -28,7 +31,7 @@ function App() {
             }
           />
           {/* Fallback: send users based on auth state */}
-          <Route path="*" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
+          <Route path="*" element={<Navigate to={user ? "/dashboard" : "/landing"} replace />} />
         </Routes>
       </Router>
     

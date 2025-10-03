@@ -56,6 +56,9 @@ const ListComponent: React.FC<ListComponentProps> = () => {
         return Object.entries(listData);
     }, [listData]);
 
+    useEffect(() => {
+        getData();
+    }, []);
     // Focus management: Focus first row when data loads
     useEffect(() => {
         if (cryptoEntries.length > 0 && !loading) {
@@ -69,17 +72,7 @@ const ListComponent: React.FC<ListComponentProps> = () => {
         }
     }, [cryptoEntries.length, loading]);
     return (
-        <div className="container mx-auto mt-5 gap-y-[20px] flex flex-col items-center justify-center max-w-6xl px-4">
-            <h1 className="mb-4 text-3xl font-bold text-gray-800">Crypto Dashboard</h1>
-            
-            <button 
-                id="loadData" 
-                className="bg-sky-800 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-2 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2" 
-                onClick={getData}
-                disabled={loading}
-            >
-                {loading ? 'Loading...' : 'Load Crypto Data'}
-            </button>
+        <div className="container mx-auto mt-5 gap-y-[20px] flex flex-col items-center justify-center  px-4">
 
             {error && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg w-full max-w-md text-center">

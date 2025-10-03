@@ -47,7 +47,7 @@ const Login: React.FC = () => {
       />
       <button
         type="submit"
-        className="bg-green-500 text-white px-4 py-2 rounded"
+        className="button-style"
         disabled={loading}
       >
         {loading ? "Logging in..." : "Login"}
