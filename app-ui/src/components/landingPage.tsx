@@ -10,7 +10,7 @@ import coinIcon from "../assets/coin-logo.gif";
 const LandingPage=()=>{
     const navigate = useNavigate();
     return(
-        <div className="h-screen flex flex-col justify-start background-gradient">
+        <div className="h-screen flex flex-col justify-start ">
             <div className="flex justify-between items-center p-5">
             <div className="flex justify-start items-start w-20 h-20">
                 <img src={coinIcon} alt="logo" />

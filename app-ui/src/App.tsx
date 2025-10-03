@@ -15,7 +15,7 @@ import "./components/app.css";
 function App() {
   const user = useAppSelector((state: RootState) => (state.auth as AuthState).user);
   return (
-    <div className="App">
+    <div className="App background-gradient">
    
       <Router>
         <Routes>
