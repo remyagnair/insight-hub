@@ -15,7 +15,7 @@ import "./components/app.css";
 function App() {
   const user = useAppSelector((state: RootState) => (state.auth as AuthState).user);
   return (
-    <div className="App background-gradient">
+    <div className="App">
    
       <Router>
         <Routes>
@@ -27,7 +27,7 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              user ? <Dashboard /> : <Navigate to="/login" replace />
+              user ? <Dashboard /> : <Navigate to="/landing" replace />
             }
           />
           {/* Fallback: send users based on auth state */}
