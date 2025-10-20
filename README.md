@@ -4,7 +4,7 @@ It provides a clean UI to monitor top coins and is optimized for scalability &am
 ## Features
 
 - **Real-time Data:** Fetch the top 10 high-volume cryptocurrencies.
-- **Clean UI:** Built with Flask and Bootstrap for a responsive, modern look.
+- **Clean UI:** Built with React JS and Tailwind for a responsive, modern look.
 - **BigQuery Integration:** Optionally insert fetched data into a Google BigQuery table.
 - **Modular Design:** Separated modules for data fetching, BigQuery operations, and the web application.
 
